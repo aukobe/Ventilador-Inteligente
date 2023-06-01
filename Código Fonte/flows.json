@@ -1,0 +1,222 @@
+[
+    {
+        "id": "99d0f90535cdb30f",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6074d0ed4a7ffd0a",
+        "type": "mqtt in",
+        "z": "99d0f90535cdb30f",
+        "name": "subscribe",
+        "topic": "chad/temp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e4607b3015ab0b1e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 900,
+        "y": 380,
+        "wires": [
+            [
+                "dd8f1ff8864d15ae",
+                "37e8dd1ca9df055f",
+                "72a9f6f47894be43"
+            ]
+        ]
+    },
+    {
+        "id": "dd8f1ff8864d15ae",
+        "type": "debug",
+        "z": "99d0f90535cdb30f",
+        "name": "msg.payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "37e8dd1ca9df055f",
+        "type": "function",
+        "z": "99d0f90535cdb30f",
+        "name": "function 4",
+        "func": "var temperatura = msg.payload;\n\nmsg.payload = {\n    \"chatId\": '1127763463',\n    \"type\": 'message',\n    \"content\": \"A temperatura que consta no sensor é de: \"+ temperatura + \".\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1240,
+        "y": 440,
+        "wires": [
+            [
+                "2bd722916a92c814"
+            ]
+        ]
+    },
+    {
+        "id": "3b28a2c7c8195060",
+        "type": "debug",
+        "z": "99d0f90535cdb30f",
+        "name": "msg.payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1770,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "421537fcdeba7d1f",
+        "type": "influxdb out",
+        "z": "99d0f90535cdb30f",
+        "influxdb": "008c76b0492d489c",
+        "name": "",
+        "measurement": "Ventilador",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "Mackenzie",
+        "bucket": "NodeRed",
+        "x": 1540,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "72a9f6f47894be43",
+        "type": "function",
+        "z": "99d0f90535cdb30f",
+        "name": "function 5",
+        "func": "msg.payload = parseFloat(msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 320,
+        "wires": [
+            [
+                "c5d6a47c2e4d8ccd",
+                "421537fcdeba7d1f"
+            ]
+        ]
+    },
+    {
+        "id": "c5d6a47c2e4d8ccd",
+        "type": "debug",
+        "z": "99d0f90535cdb30f",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1400,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2bd722916a92c814",
+        "type": "telegram sender",
+        "z": "99d0f90535cdb30f",
+        "name": "",
+        "bot": "43bda78028aa32a2",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1630,
+        "y": 420,
+        "wires": [
+            [
+                "3b28a2c7c8195060"
+            ]
+        ]
+    },
+    {
+        "id": "e4607b3015ab0b1e",
+        "type": "mqtt-broker",
+        "name": "mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "008c76b0492d489c",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "Ventilador",
+        "name": "Cloud",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "43bda78028aa32a2",
+        "type": "telegram bot",
+        "botname": "ventiladorInteligenteBot",
+        "usernames": "ebokua",
+        "chatids": "1127763463",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
